@@ -1,4 +1,4 @@
-open Ast
+ open Ast
 open Mapfold
 open Static
 open Static_utils
@@ -11,13 +11,15 @@ let expect_bool env se =
   let se = simplify env se in
   match se.se_desc with
     | SBool v -> v
-    | _ -> Format.eprintf "Expected a boolean@."; raise Error
+    | _ -> Format.eprintf "%aExpected a boolean.@." print_location se.se_loc;
+      raise Error
 
 let expect_int env se =
   let se = simplify env se in
   match se.se_desc with
     | SInt v -> v
-    | _ -> Format.eprintf "Expected an integer@."; raise Error
+    | _ -> Format.eprintf "%aExpected an integer@."print_location se.se_loc;
+      raise Error
 
 let simplify_ty env ty = match ty with
   | TBitArray se -> TBitArray (simplify env se)
