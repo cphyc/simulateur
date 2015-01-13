@@ -2,6 +2,7 @@ open Ast
 open Static
 open Static_utils
 open Ident
+open Location
 
 let expect_int se =
   let se = simplify NameEnv.empty se in
@@ -13,7 +14,9 @@ let expect_int se =
 
 let expect_ident e = match e.e_desc with
   | Evar id -> string_of_ident id
-  | _ -> assert false
+  | _ -> Format.eprintf "Unexpected type: %a@." Printer.print_edesc e.e_desc;
+    Format.eprintf "%aSyntax error.@." print_location e.e_loc;
+    assert false
 
 let tr_value v = match v with
   | VBit b -> Netlist_ast.VBit b
